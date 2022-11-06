@@ -1,6 +1,6 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
+const express = require('express')
+const dotenv = require('dotenv')
+const cors = require('cors')
 // import cookieSession from 'cookie-session'
 
 const app = express()
