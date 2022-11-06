@@ -1,9 +1,22 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
+// import cookieSession from 'cookie-session'
 
 const app = express()
 
 dotenv.config()
+
+// app.use(cookieSession({
+//     name: "session",
+//     keys: [""]
+// }))
+
+
+app.use(cors({
+    origin: process.env.LOCAL_CLIENT,
+    credentials: true
+}))
 
 app.get('/', async (req, res)=>{
     try{
