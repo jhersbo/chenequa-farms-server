@@ -26,14 +26,6 @@ module.exports = {
       photo_path: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },
