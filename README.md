@@ -4,4 +4,4 @@
 
 | URL Route    | Method       | Body        | Params      | Explanation     |
 |:------------:|:------------:|:-----------:|:-----------:|:---------------:|
-| /user_auth   | GET          | NONE        | NONE        | Gets all users in DB|
+| /user_auth   | `GET`          | NONE        | NONE        | Gets all users in DB|
