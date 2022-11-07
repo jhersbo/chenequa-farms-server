@@ -1,4 +1,4 @@
-# Welcome to the Chenequa Farms Web API #
+# Chenequa Farms Web API #
 ## Below is a guide on how to use the routes: ##
 #### Cross Origin Resource Sharing is enabled and restricted. ####
 
