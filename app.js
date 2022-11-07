@@ -18,6 +18,10 @@ app.use(cors({
     credentials: true
 }))
 
+
+//controllers
+app.use('/user_auth', require('./routes/user_auth'))
+
 app.get('/', async (req, res)=>{
     try{
         res.send('Home')

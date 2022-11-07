@@ -44,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'user_auth',
-    tableName: "user_auth"
+    tableName: "user_auth",
+    timestamps: false
   });
   return user_auth;
 };

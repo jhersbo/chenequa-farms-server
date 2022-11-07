@@ -28,10 +28,10 @@ const userSeed = [
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('user_auths', userSeed, {})
+    await queryInterface.bulkInsert('user_auth', userSeed, {})
   },
 
   async down (queryInterface, Sequelize) {
-    queryInterface.bulkDelete('user_auths', null, {})
+    queryInterface.bulkDelete('user_auth', null, {})
   }
 };
