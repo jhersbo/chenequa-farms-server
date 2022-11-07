@@ -2,6 +2,7 @@ const router = require('express').Router()
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
+//get all users
 router.get('/', async (req, res)=>{
     try{
         const foundUsers = await user_auth.findAll({})

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
-    category:{
+    category: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    price:{
+    price: {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
