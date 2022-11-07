@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Sequelize
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class user_orders extends Model {
@@ -29,10 +29,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    item_id: {
-      type: DataTypes.STRING,
+    order_content: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
     },
+    //item_ids will look like this:
+    // item_ids = [{item_id: string, qty: number}]
+    filled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'user_orders',

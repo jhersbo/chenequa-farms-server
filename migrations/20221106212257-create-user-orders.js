@@ -11,8 +11,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      item_id: {
-        type: Sequelize.STRING,
+      order_content: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: false
+      },
+      filled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
         allowNull: false
       }
     });

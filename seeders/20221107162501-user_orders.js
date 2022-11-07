@@ -4,12 +4,34 @@ const userOrdersSeed = [
   {
     order_id: "0",
     user_id: "2",
-    item_id: "0"
+    order_content: [
+      JSON.stringify(
+        {
+          item_id: "1",
+          qty: 1
+        },
+        {
+          item_id: "0",
+          qty: 2
+        }
+      )
+    ]
   },
   {
     order_id: "1",
     user_id: "2",
-    item_id: "1"
+    order_content: [
+      JSON.stringify(
+        {
+          item_id: "1",
+          qty: 1
+        },
+        {
+          item_id: "0",
+          qty: 2
+        }
+      )
+    ]
   }
 ]
 

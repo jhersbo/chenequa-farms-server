@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS public.user_orders
 (
     order_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     user_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    item_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    order_content character varying(255)[] COLLATE pg_catalog."default" NOT NULL,
+    filled boolean NOT NULL DEFAULT false,
     CONSTRAINT user_orders_pkey PRIMARY KEY (order_id)
 );
 END;
