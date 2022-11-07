@@ -4,8 +4,8 @@ const subscriptionsSeed = [
   {
     sub_id: "0",
     user_id: "2",
-    purch_date: new Date().getDate(),
-    renew_date: new Date().getDate(),
+    purch_date: new Date(),
+    renew_date: new Date(),
     active: true,
     rate: "50",
     type: "flowers-biweekly"
@@ -13,8 +13,8 @@ const subscriptionsSeed = [
   {
     sub_id: "1",
     user_id: "2",
-    purch_date: new Date().getDate(),
-    renew_date: new Date().getDate(),
+    purch_date: new Date(),
+    renew_date: new Date(),
     active: true,
     rate: "10",
     type: "soap-biweekly"

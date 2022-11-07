@@ -13,4 +13,27 @@ router.get('/', async (req, res)=>{
     }
 })
 
+//get specific user
+router.get('/:user_id', async (req, res)=>{
+    try{
+        const foundUser = await user_auth.findOne({
+            where: {
+                user_id: req.params.user_id
+            },
+            include: [
+                {
+                    model: user_orders
+                },
+                {
+                    model: subscriptions
+                }
+            ]
+        })
+        res.status(200).json(foundUser)
+    }catch(err){
+        res.status(500).json(err)
+        console.log(err)
+    }
+})
+
 module.exports = router

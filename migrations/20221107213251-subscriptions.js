@@ -9,7 +9,14 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: {
+            tableName: "user_auth",
+            schema: "public"
+          },
+          key: "user_id"
+        }
       },
       purch_date: {
         type: Sequelize.STRING,

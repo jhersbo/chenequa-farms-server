@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       this.belongsTo(inventory, {
-        foreignKey: "item_id"
+        foreignKey: "order_content"
       })
     }
   }

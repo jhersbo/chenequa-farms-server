@@ -9,7 +9,9 @@ const userOrdersSeed = [
         {
           item_id: "1",
           qty: 1
-        },
+        }
+      ),
+      JSON.stringify(
         {
           item_id: "0",
           qty: 2
@@ -25,7 +27,9 @@ const userOrdersSeed = [
         {
           item_id: "1",
           qty: 1
-        },
+        }
+      ),
+      JSON.stringify(
         {
           item_id: "0",
           qty: 2
