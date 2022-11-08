@@ -2,6 +2,11 @@ const router = require('express').Router()
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
+//bcrypt
+
+const bcrypt = require('bcrypt')
+const saltRound = 10
+
 //get all users
 router.get('/', async (req, res)=>{
     try{
