@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS public.subscriptions
     CONSTRAINT subscriptions_pkey PRIMARY KEY (sub_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.user_auths
+CREATE TABLE IF NOT EXISTS public.user_auth
 (
     user_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     email_address character varying(255) COLLATE pg_catalog."default" NOT NULL,
     password_hash character varying(255) COLLATE pg_catalog."default" NOT NULL,
     first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     last_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT user_auths_pkey PRIMARY KEY (user_id)
+    CONSTRAINT user_auth_pkey PRIMARY KEY (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.user_orders
@@ -50,4 +50,18 @@ CREATE TABLE IF NOT EXISTS public.user_orders
     filled boolean NOT NULL DEFAULT false,
     CONSTRAINT user_orders_pkey PRIMARY KEY (order_id)
 );
+
+ALTER TABLE IF EXISTS public.subscriptions
+    ADD CONSTRAINT subscriptions_user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES public.user_auth (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.user_orders
+    ADD CONSTRAINT user_orders_user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES public.user_auth (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
 END;
