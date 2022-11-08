@@ -33,8 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
     },
-    //item_ids will look like this:
-    // item_ids = [{item_id: string, qty: number}]
     filled: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
