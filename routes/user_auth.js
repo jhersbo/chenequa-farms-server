@@ -3,7 +3,6 @@ const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
 //bcrypt
-
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
@@ -13,7 +12,7 @@ router.get('/', async (req, res)=>{
         const foundUsers = await user_auth.findAll({})
         res.status(200).json(foundUsers)
     }catch(err){
-        res.status(500).json(err)
+        res.status(203).json(err)
         console.log(err)
     }
 })
@@ -36,31 +35,80 @@ router.get('/:user_id', async (req, res)=>{
         })
         res.status(200).json(foundUser)
     }catch(err){
-        res.status(500).json(err)
+        res.status(203).json(err)
         console.log(err)
     }
 })
 
-//create a new user **untested**
+//create a new user
 router.post('/', (req, res)=>{
     bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
         try{
-            await user_auth.create({
-                user_id: req.body.user_id,
-                email_address: req.body.email_address,
-                password_hash: hash,
-                first_name: req.body.first_name,
-                last_name: req.body.last_name
+            let verifyNoDuplicates = await user_auth.findOne({
+                where: {
+                    user_id: req.body.user_id
+                }
             })
-            if(err){
-                res.status(401).json({bcrypt_error_msg: err})
+            
+            if(verifyNoDuplicates === null){
+                await user_auth.create({
+                    user_id: req.body.user_id,
+                    email_address: req.body.email_address,
+                    password_hash: hash,
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name
+                })
+                res.status(200).json("User created.")
                 return
             }
-            res.status(200).json("User created.")
+            res.status(203).json("User already exists")
         }catch(err){
-            res.status(500).json("Error creating user.", err)
+            res.status(203).json("Error creating user.")
         }
     })
 })
+
+//password authentication
+router.post('/auth', async (req, res)=>{
+    await user_auth.findOne({
+        where: {
+            user_id: req.body.user_id
+        }
+    })
+    .then((user)=>{
+        if(!user){
+            res.status(203).json("No user found.")
+        }else{
+            bcrypt.compare(req.body.password_hash, user.password_hash, (err, result)=>{
+                if(result){
+                    res.status(200).json("User authenticated.")
+                }else{
+                    res.status(203).json("Incorrect password.")
+                }
+                
+            })
+        }
+    })
+    .catch((err)=>{
+        res.status(203).json(err)
+    })
+})
+
+//update user information
+//need to handle hashed password changes
+// router.put('/', async (req, res)=>{
+//     try{
+//         await user_auth.update(req.body, {
+//             where:{
+//                 user_id: req.body.user_id
+//             }
+//         })
+//         res.status(200).json("Successfully edited user's data.")
+//     }catch(err){
+//         res.status(203).json("Error updating user's information.")
+//     }
+// })
+
+
 
 module.exports = router

@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 // import cookieSession from 'cookie-session'
 
 const app = express()
@@ -17,6 +18,9 @@ app.use(cors({
     origin: process.env.LOCAL_CLIENT,
     credentials: true
 }))
+
+//parser for request bodies
+app.use(bodyParser.json())
 
 
 //controllers
