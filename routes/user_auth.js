@@ -134,6 +134,7 @@ router.put('/', (req, res)=>{
     })
 })
 
+//delete user
 router.delete('/', async (req, res)=>{
     try{
         user_auth.destroy({
