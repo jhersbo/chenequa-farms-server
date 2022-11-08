@@ -25,6 +25,7 @@ app.use(bodyParser.json())
 
 //controllers
 app.use('/user_auth', require('./routes/user_auth'))
+app.use('/inventory', require('./routes/inventory'))
 
 app.get('/', async (req, res)=>{
     try{
