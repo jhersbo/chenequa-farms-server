@@ -36,5 +36,6 @@ app.get('/', async (req, res)=>{
 })
 
 app.listen(process.env.PORT, ()=>{
+    console.log(`Launching <-${process.env.NODE_ENV.toUpperCase()}-> environment...`)
     console.log(`Listening on ${process.env.PORT}`)
 })
