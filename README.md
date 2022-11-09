@@ -1,7 +1,6 @@
 # Chenequa Farms Web API #
-## Below is a guide on how to use the routes: ##
 #### Cross Origin Resource Sharing is enabled and restricted. ####
-
+#### Route Guide: ####
 | URL Route    | Method       | Body        | Explanation     |
 |:------------:|:------------:|:-----------|:---------------|
 | /user_auth   | `GET`          | NONE        | Gets all users in DB|
