@@ -13,5 +13,17 @@
 | /inventory   | `GET`     | NONE         | Gets the entire inventory.    |
 | /inventory/**:item_id**   | `GET`   | NONE    | Gets an item by item_id   |
 | /inventory   | `POST`     | `item_id: string` `category: string` `name: string` `description: string` `number_remaining: integer` `price: decimal` `photo_path: string`   | Creates a new item.     |
-| /inventory    | `PUT`     | `item_id: string` `category?: string` `name?: string` `description?: string` `number_remaining?: integer` `price?: decimal` `photo_path?: string`   | Queries using `item_id`. Updates item information to the information passed in request body.    |
+| /inventory    | `PUT`     | `item_id: string` `category?: string` `name?: string` `description?: string` `number_remaining?: integer` `price?: decimal` `photo_path?: string`   | Querys using `item_id`. Updates item information to the information passed in request body.    |
 | /inventory/:**item_id**  | `DELETE`    | NONE    | Deletes selected item.    |
+| /user_orders    | `GET`   | NONE    | Gets all orders.    |
+| /user_orders/unfilled   | `GET`   | NONE    | Gets all unfilled orders    |
+| /user_orders/**:user_id**   | `GET`   | NONE    | Gets `user_id`'s orders.    |
+| /user_orders/unfilled/**:user_id**    | `GET`   | NONE    | Gets `user_id`'s unfilled orders.   |
+| /user_orders   | `POST`    | `order_id: string` `user_id: string` `order_content: string[]` `filled: boolean -> default: false`    | Creates a new item.   |
+| /user_orders    | `PUT`   | `order_id: string` `user_id?: string` `order_content?: string[]` `filled?: boolean`   | Querys using `order_id`. Updates order information to the information passed in request body.    |
+| /user_orders/**:order_id**    | `DELETE`    | NONE    | Deletes selected order.   |
+| /subscriptions    | `GET`   | NONE    | Gets all subscriptions.   |
+| /subscriptions/**:user_id**   | `GET`   | NONE    | Gets a user's subscriptions. Includes user from `user_auth` table.    |
+| /subscriptions    | `POST`    | `sub_id: string` `user_id: string` `purch_date: string` `renew_date: string` `active: boolean` `rate: decimal` `type: string`   | Creates a new subscription.   |
+| /subscriptions    | `PUT`   | `sub_id: string` `user_id?: string` `purch_date?: string` `renew_date?: string` `active?: boolean` `rate?: decimal` `type?: string`   | Querys using `sub_id`. Updates subscription information to the information passed in request body.    |
+| /subscriptions/**:sub_id**   | `DELETE`    | NONE    | Deletes selected subscription.    |
