@@ -21,6 +21,13 @@ const userSeed = [
     password_hash: "#hash",
     first_name: "Amanda",
     last_name: "Ramirez",
+  },
+  {
+    user_id: "83721662345",
+    email_address: "cummaster69@gmail.com",
+    password_hash: "$2b$10$ESAu/hfBSebKHnFDVWXib.Ws34bT7ZSrZLWmtHnqHij54OaU0G2Gq",
+    first_name: "Alex",
+    last_name: "Gapinski"
   }
 ]
 
