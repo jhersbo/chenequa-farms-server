@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS public.inventory
 (
     item_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     category character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     description character varying(255) COLLATE pg_catalog."default" NOT NULL,
     number_remaining integer NOT NULL,
     price numeric NOT NULL,
