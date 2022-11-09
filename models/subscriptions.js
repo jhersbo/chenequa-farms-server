@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     rate: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL,
       allowNull: false
     },
     type: {

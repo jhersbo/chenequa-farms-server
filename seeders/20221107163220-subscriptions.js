@@ -7,7 +7,7 @@ const subscriptionsSeed = [
     purch_date: new Date(),
     renew_date: new Date(),
     active: true,
-    rate: "50",
+    rate: 50,
     type: "flowers-biweekly"
   },
   {
@@ -16,7 +16,7 @@ const subscriptionsSeed = [
     purch_date: new Date(),
     renew_date: new Date(),
     active: true,
-    rate: "10",
+    rate: 10,
     type: "soap-biweekly"
   }
 ]

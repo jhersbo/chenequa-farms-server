@@ -31,7 +31,7 @@ module.exports = {
         allowNull: false
       },
       rate: {
-        type: Sequelize.STRING,
+        type: Sequelize.DECIMAL,
         allowNull: false
       },
       type: {

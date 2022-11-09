@@ -25,7 +25,7 @@ const inventorySeed = [
     name: "Beeswax Lip Balm",
     description: "{Kind} of beeswax.",
     number_remaining: 2,
-    price: "8",
+    price: 8,
     photo_path: "https://placekitten.com/200/300"
   }
 ]
