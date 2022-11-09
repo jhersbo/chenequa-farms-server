@@ -76,11 +76,7 @@ router.put('/', async (req, res)=>{
         if(!found){
             res.status(203).json("No order by that ID exists.")
         }else{
-            await user_orders.update(req.body, {
-                where: {
-                    order_id: req.body.order_id
-                }
-            })
+            await found.update(req.body)
             res.status(200).json("Order updated.")
         }
     }catch(err){

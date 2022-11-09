@@ -23,6 +23,7 @@ app.use(bodyParser.json())
 app.use('/user_auth', require('./routes/user_auth'))
 app.use('/inventory', require('./routes/inventory'))
 app.use('/user_orders', require('./routes/user_orders'))
+app.use('/subscriptions', require('./routes/subscriptions'))
 
 app.get('/', async (req, res)=>{
     try{
