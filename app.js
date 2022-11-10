@@ -10,12 +10,12 @@ dotenv.config()
 //     name: "session",
 //     keys: [""]
 // }))
-
-
-app.use(cors({
-    origin: process.env.LOCAL_CLIENT,
+const corsConfig = {
+    origin: process.env.NODE_ENV === "development" ? process.env.LOCAL_CLIENT : process.env.PROD_CLIENT,
     credentials: true
-}))
+}
+
+app.use(cors(corsConfig))
 
 //parser for request bodies
 app.use(bodyParser.json())
@@ -36,6 +36,6 @@ app.get('/', async (req, res)=>{
 })
 
 app.listen(process.env.PORT, ()=>{
-    console.log(`Launching <-${process.env.NODE_ENV.toUpperCase()}-> environment...`)
-    console.log(`Listening on ${process.env.PORT}`)
+    console.log(`\nLaunching <-${process.env.NODE_ENV.toUpperCase()}-> environment...\n`)
+    console.log(`\nListening on ${process.env.PORT}\n`)
 })
