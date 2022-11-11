@@ -11,7 +11,7 @@ dotenv.config()
 //     keys: [""]
 // }))
 const corsConfig = {
-    origin: process.env.NODE_ENV === "development" ? process.env.LOCAL_CLIENT : process.env.PROD_CLIENT,
+    origin: "http://localhost:3001",
     credentials: true
 }
 
