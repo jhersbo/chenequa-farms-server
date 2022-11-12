@@ -3,7 +3,7 @@
 const inventorySeed = [
   {
     item_id: "0",
-    category: "Flowers",
+    category_id: "0",
     name: "Flower Boquet",
     description: "Boquet of {name} flowers.",
     number_remaining: 12,
@@ -12,7 +12,7 @@ const inventorySeed = [
   },
   {
     item_id: "1",
-    category: "Soap",
+    category_id: "1",
     name: "Natural Soap", 
     description: "{Kind} of Soap",
     number_remaining: 2,
@@ -21,7 +21,7 @@ const inventorySeed = [
   },
   {
     item_id: "2345511",
-    category: "Beeswax",
+    category_id: "2",
     name: "Beeswax Lip Balm",
     description: "{Kind} of beeswax.",
     number_remaining: 2,

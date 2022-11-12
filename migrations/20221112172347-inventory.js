@@ -7,9 +7,16 @@ module.exports = {
         allowNull: false,
         primaryKey: true
       },
-      category: {
+      category_id: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: {
+            tableName: "categories",
+            schema: "public"
+          },
+          key: "category_id"
+        }
       },
       name: {
         type: Sequelize.STRING,
