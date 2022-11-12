@@ -7,6 +7,7 @@ const userSeed = [
     password_hash: "#hash",
     first_name: "John",
     last_name: "Doe",
+    is_admin: false
   },
   {
     user_id: "1",
@@ -14,6 +15,7 @@ const userSeed = [
     password_hash: "#hash",
     first_name: "Jane",
     last_name: "Doe",
+    is_admin: false
   },
   {
     user_id: "2",
@@ -21,13 +23,15 @@ const userSeed = [
     password_hash: "#hash",
     first_name: "Amanda",
     last_name: "Ramirez",
+    is_admin: false
   },
   {
     user_id: "83721662345",
     email_address: "cummaster69@gmail.com",
     password_hash: "$2b$10$ESAu/hfBSebKHnFDVWXib.Ws34bT7ZSrZLWmtHnqHij54OaU0G2Gq",
     first_name: "Alex",
-    last_name: "Gapinski"
+    last_name: "Gapinski",
+    is_admin: false
   }
 ]
 

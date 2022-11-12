@@ -1,12 +1,21 @@
 const router = require('express').Router()
 const db = require('../models')
-const { inventory, user_orders } = db
+const { inventory, categories } = db
 
 
 //get whole inventory
 router.get('/', async (req, res)=>{
     try{
-        let foundInventory = await inventory.findAll({})
+        let foundInventory = await inventory.findAll({
+            include: [
+                {
+                    model: categories,
+                    attributes: {
+                        exclude: ["category_id"]
+                    }
+                }
+            ]
+        })
         res.status(200).json(foundInventory)
     }catch(err){
         res.status(500).json(err)
