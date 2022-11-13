@@ -9,10 +9,18 @@ CREATE TABLE IF NOT EXISTS public."SequelizeMeta"
     CONSTRAINT "SequelizeMeta_pkey" PRIMARY KEY (name)
 );
 
+CREATE TABLE IF NOT EXISTS public.categories
+(
+    category_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    category_name character varying(255) COLLATE pg_catalog."default",
+    category_thumbnail character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT categories_pkey PRIMARY KEY (category_id)
+);
+
 CREATE TABLE IF NOT EXISTS public.inventory
 (
     item_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    category character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    category_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     description character varying(255) COLLATE pg_catalog."default" NOT NULL,
     number_remaining integer NOT NULL,
@@ -28,7 +36,7 @@ CREATE TABLE IF NOT EXISTS public.subscriptions
     purch_date character varying(255) COLLATE pg_catalog."default" NOT NULL,
     renew_date character varying(255) COLLATE pg_catalog."default" NOT NULL,
     active boolean NOT NULL,
-    rate character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    rate numeric NOT NULL,
     type character varying(255) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT subscriptions_pkey PRIMARY KEY (sub_id)
 );
@@ -40,6 +48,7 @@ CREATE TABLE IF NOT EXISTS public.user_auth
     password_hash character varying(255) COLLATE pg_catalog."default" NOT NULL,
     first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     last_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    is_admin boolean NOT NULL DEFAULT false,
     CONSTRAINT user_auth_pkey PRIMARY KEY (user_id)
 );
 
@@ -51,6 +60,13 @@ CREATE TABLE IF NOT EXISTS public.user_orders
     filled boolean NOT NULL DEFAULT false,
     CONSTRAINT user_orders_pkey PRIMARY KEY (order_id)
 );
+
+ALTER TABLE IF EXISTS public.inventory
+    ADD CONSTRAINT inventory_category_id_fkey FOREIGN KEY (category_id)
+    REFERENCES public.categories (category_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
 
 ALTER TABLE IF EXISTS public.subscriptions
     ADD CONSTRAINT subscriptions_user_id_fkey FOREIGN KEY (user_id)
