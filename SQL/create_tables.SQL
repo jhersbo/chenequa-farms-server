@@ -49,6 +49,8 @@ CREATE TABLE IF NOT EXISTS public.user_auth
     first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     last_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     is_admin boolean NOT NULL DEFAULT false,
+    reset_password_token character varying(255) COLLATE pg_catalog."default",
+    reset_password_expiration bigint,
     CONSTRAINT user_auth_pkey PRIMARY KEY (user_id)
 );
 

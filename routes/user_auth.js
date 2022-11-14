@@ -1,5 +1,7 @@
 const router = require('express').Router()
 require('dotenv').config()
+const crypto = require("crypto")
+const nodemailer = require("nodemailer")
 
 //DBs
 const db = require('../models')
@@ -89,7 +91,10 @@ router.post('/auth', async (req, res)=>{
     })
     .then((user)=>{
         if(!user){
-            res.status(203).json({success: false, message: "Error. No user found."})
+            res.status(203).json({
+                success: false, 
+                message: "Error. No user found."
+            })
         }else{
             bcrypt.compare(req.body.password_hash, user.password_hash, (err, result)=>{
                 if(result){
@@ -106,7 +111,10 @@ router.post('/auth', async (req, res)=>{
                         }
                     })
                 }else{
-                    res.status(203).json({success: false, message: "Error. Incorrect passcode."})
+                    res.status(203).json({
+                        success: false, 
+                        message: "Error. Incorrect passcode."
+                    })
                 }
                 
             })
@@ -115,6 +123,78 @@ router.post('/auth', async (req, res)=>{
     .catch((err)=>{
         res.status(500).json(err)
     })
+})
+
+//forgot password *****NOT WORKING*****GMAIL NEEDS TO BE TROUBLESHOOTED
+router.post('/forgot-password', async (req, res)=>{
+    if(req.body.email_address === ""){
+        return res.status(203).json({
+            success: false,
+            message: "Email address required in request body."
+        })
+    }
+    try{
+        let user = await user_auth.findOne({
+            where: {
+                email_address: req.body.email_address
+            }
+        })
+
+        console.log(user)
+
+        if(!user){
+            return res.status(203).json({
+                success: false,
+                message: "No user by that email in DB."
+            })
+        }
+
+        const token = crypto.randomBytes(20).toString("hex")
+        console.log(token)
+        user = await user.update({
+            reset_password_token: token,
+            //1 hour (ms)
+            reset_password_expiration: (Date.now() + 360000)
+        })
+
+        // send email here
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: `${process.env.EMAIL_ADDRESS}`,
+                pass: `${process.env.EMAIL_PASSWORD}`
+            }
+        })
+
+        const mailOptions = {
+            from: "ersbo.jack@gmail.com",
+            to: user.email_address,
+            subject: "Password reset link",
+            text: `You are receiving this email because you requested the reset of the password for your account. \n` + `Please click on the following link or paste it into your web browser. This link is usable for one hour. \n` + `${process.env.LOCAL_SERVER}forgot-password/${token} \n` + `If you did not request this, please ignore this email and your password will remain unchanged. \n`
+        }
+
+        transporter.sendMail(mailOptions, (err, response)=>{
+            if(err){
+                return res.status(203).json({
+                    success: false,
+                    error: err,
+                    message: "There was an error sending the email."
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                response: response,
+                message: "Email sent successfully."
+            })
+        })
+
+    }catch(err){
+        return res.status(500).json({
+            success: false,
+            error: err,
+            message: "Error setting token or sending recovery email."
+        })
+    }
 })
 
 //update user information

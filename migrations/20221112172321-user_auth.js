@@ -27,6 +27,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      reset_password_token: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      reset_password_expiration: {
+        type: Sequelize.BIGINT,
+        allowNull: true
       }
     });
   },
