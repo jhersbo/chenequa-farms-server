@@ -170,7 +170,7 @@ router.post('/forgot-password', async (req, res)=>{
             from: "ersbo.jack@gmail.com",
             to: user.email_address,
             subject: "Password reset link",
-            text: `You are receiving this email because you requested the reset of the password for your account. \n` + `Please click on the following link or paste it into your web browser. This link is usable for one hour. \n` + `${process.env.LOCAL_SERVER}forgot-password/${token} \n` + `If you did not request this, please ignore this email and your password will remain unchanged. \n`
+            text: `You are receiving this email because you requested the reset of the password for your account. \n` + `Please click on the following link or paste it into your web browser. This link is usable for one hour. \n` + `${process.env.LOCAL_CLIENT}forgot-password/${token} \n` + `If you did not request this, please ignore this email and your password will remain unchanged. \n`
         }
 
         transporter.sendMail(mailOptions, (err, response)=>{
