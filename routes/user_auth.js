@@ -166,11 +166,9 @@ router.post('/auth', async (req, res)=>{
 })
 
 //update user information
-router.put('/', async (req, res)=>{
+router.put('/', (req, res)=>{
     const token = decodeToken(req)
-
-    console.log(token)
-
+    
     if(typeof token === "undefined"){
         return res.status(203).json({
             success: false, 
@@ -189,37 +187,39 @@ router.put('/', async (req, res)=>{
         })
     }
 
-    try{
-        let user = await user_auth.findOne({
-            where: {
-                user_id: req.body.user_id
-            }
-        })
-    
-        if(!user){
-            return res.status(203).json({
-                success: false, 
-                message: "Error. No user found."
+    bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
+        try{
+            let user = await user_auth.findOne({
+                where: {
+                    user_id: req.body.user_id
+                }
             })
-        }
-    
-        user = await user.update(req.body)
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                user_id: user.user_id,
-                email_address: user.email_address,
-                password_hash: user.password_hash,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                is_admin: user.is_admin,
-                token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
+        
+            if(!user){
+                return res.status(203).json({
+                    success: false, 
+                    message: "Error. No user found."
+                })
             }
-        })
-    }catch(err){
-        return res.status(500).json(err)
-    }
+        
+            user = await user.update({...req.body, password_hash: hash})
+    
+            return res.status(200).json({
+                success: true,
+                data: {
+                    user_id: user.user_id,
+                    email_address: user.email_address,
+                    password_hash: user.password_hash,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    is_admin: user.is_admin,
+                    token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
+                }
+            })
+        }catch(err){
+            return res.status(500).json(err)
+        }
+    })
 })
 
 //delete user
