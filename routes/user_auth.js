@@ -1,4 +1,6 @@
 const router = require('express').Router()
+require('dotenv').config()
+const jwt = require('jsonwebtoken')
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
@@ -28,6 +30,37 @@ const noDuplicates = async (user_id)=>{
         return false
     }
     return true
+}
+
+const generateAccessToken = (user_id, email_address, is_admin)=>{
+    let token = jwt
+    .sign(
+        {
+            user_id: user_id, 
+            email_address: email_address,
+            is_admin: is_admin
+        }, 
+        process.env.TOKEN_SECRET, 
+        {
+            expiresIn: process.env.TOKEN_EXPIRATION
+        }
+    )
+    return token
+}
+
+const decodeToken = (req)=>{
+    const token = req.headers.authorization.split(' ')[1];
+
+    if(!token) return new Error("No token found.")
+
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded)=>{
+        if(err){
+            return
+        }
+        return decoded
+    })
+
+    return decodedToken
 }
 
 //**********ROUTERS*************************************/
@@ -68,21 +101,29 @@ router.get('/:user_id', async (req, res)=>{
 //create a new user
 router.post('/', (req, res)=>{
     bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
-        try{            
+        try{
+            let newUser = {
+                user_id: req.body.user_id,
+                email_address: req.body.email_address,
+                password_hash: hash,
+                first_name: req.body.first_name.toLowerCase(),
+                last_name: req.body.last_name.toLowerCase(),
+                is_admin: false
+            }          
             if(await noDuplicates(req.body.user_id)){
-                await user_auth.create({
-                    user_id: req.body.user_id,
-                    email_address: req.body.email_address,
-                    password_hash: hash,
-                    first_name: req.body.first_name.toLowerCase(),
-                    last_name: req.body.last_name.toLowerCase()
+                await user_auth.create(newUser)
+                res.status(200).json({
+                    success: true,
+                    data: {
+                        ...newUser,
+                        token: generateAccessToken(newUser.user_id, newUser.email_address, newUser.is_admin)
+                    }
                 })
-                res.status(200).json("User created.")
                 return
             }
-            res.status(203).json("User already exists")
+            res.status(203).json({success: false, message: "User already exists."})
         }catch(err){
-            res.status(500).json("Error creating user.")
+            res.status(500).json(err)
         }
     })
 })
@@ -91,18 +132,29 @@ router.post('/', (req, res)=>{
 router.post('/auth', async (req, res)=>{
     await user_auth.findOne({
         where: {
-            user_id: req.body.user_id
+            email_address: req.body.email_address
         }
     })
     .then((user)=>{
         if(!user){
-            res.status(203).json("No user found.")
+            res.status(203).json({success: false, message: "Error. No user found."})
         }else{
             bcrypt.compare(req.body.password_hash, user.password_hash, (err, result)=>{
                 if(result){
-                    res.status(200).json("User authenticated.")
+                    res.status(200).json({
+                        success: true,
+                        data: {
+                            user_id: user.user_id,
+                            email_address: user.email_address,
+                            password_hash: user.password_hash,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            is_admin: user.is_admin,
+                            token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
+                        }
+                    })
                 }else{
-                    res.status(203).json("Incorrect password.")
+                    res.status(203).json({success: false, message: "Error. Incorrect passcode."})
                 }
                 
             })
@@ -114,27 +166,64 @@ router.post('/auth', async (req, res)=>{
 })
 
 //update user information
-router.put('/', (req, res)=>{
-    bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
-        try{
-            if(await userExists(req.body.user_id)){
-                await user_auth.update({ ...req.body, password_hash: hash }, {
-                    where: {
-                        user_id: req.body.user_id
-                    }
-                })
-                res.status(200).json("User updated.")
-            }else{
-                res.status(203).json("User does not exist.")
+router.put('/', async (req, res)=>{
+    const token = decodeToken(req)
+
+    console.log(token)
+
+    if(typeof token === "undefined"){
+        return res.status(203).json({
+            success: false, 
+            message: "Authentication error. Invalid bearer token. Error while decoding the token."
+        })
+    }
+
+    let user_idMatch = req.body.user_id !== token.user_id;
+    let email_addressMatch = req.body.email_address !== token.email_address;
+    let expiredCheck = token.exp >= Date.now();
+
+    if(user_idMatch || email_addressMatch || expiredCheck){
+        return res.status(203).json({
+            success: false, 
+            message: "Authentication error. Invalid bearer token."
+        })
+    }
+
+    try{
+        let user = await user_auth.findOne({
+            where: {
+                user_id: req.body.user_id
             }
-            
-        }catch(err){
-            res.status(500).json("Error updating user.")
+        })
+    
+        if(!user){
+            return res.status(203).json({
+                success: false, 
+                message: "Error. No user found."
+            })
         }
-    })
+    
+        user = await user.update(req.body)
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                user_id: user.user_id,
+                email_address: user.email_address,
+                password_hash: user.password_hash,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                is_admin: user.is_admin,
+                token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
+            }
+        })
+    }catch(err){
+        return res.status(500).json(err)
+    }
 })
 
 //delete user
+//add JWT authentication
 router.delete('/', async (req, res)=>{
     try{
         user_auth.destroy({
