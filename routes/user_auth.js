@@ -125,7 +125,7 @@ router.post('/auth', async (req, res)=>{
     })
 })
 
-//forgot password
+//forgot password email
 router.post('/forgot-password', async (req, res)=>{
     if(req.body.email_address === ""){
         return res.status(203).json({
@@ -197,6 +197,60 @@ router.post('/forgot-password', async (req, res)=>{
             message: "Error setting token or sending recovery email."
         })
     }
+})
+
+//update password
+router.put('/forgot-password', (req, res)=>{
+    bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
+        try{
+            let user = await user_auth.findOne({
+                where: {
+                    email_address: req.body.email_address
+                }
+            })
+
+            if(!user){
+                return res.status(203).json({
+                    success: false, 
+                    message: "Error. No user found by that email address."
+                })
+            }
+
+            let tokensMatch = user.reset_password_token === req.body.reset_password_token;
+            let tokenNotExpired = user.reset_password_expiration >= Date.now();
+
+            if(!tokensMatch || !tokenNotExpired){
+                return res.status(203).json({
+                    success: false, 
+                    message: "Token validation error. Token incorrect or expired."
+                })
+            }
+
+            user = await user.update({
+                password_hash: hash
+            })
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    user_id: user.user_id,
+                    email_address: user.email_address,
+                    password_hash: user.password_hash,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    is_admin: user.is_admin,
+                    token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
+                }
+            })
+
+        }catch(err){
+            return res.status(500).json({
+                success: false,
+                error: err,
+                message: "Error resetting password."
+            })
+        }
+    })
 })
 
 //update user information
