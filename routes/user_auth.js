@@ -13,7 +13,7 @@ const { noUserIdDuplicates } = require("../helpers/user_db_checks")
 
 //bcrypt
 const bcrypt = require('bcrypt')
-const saltRounds = 10
+const saltRounds = process.env.BCRYPT_SALT_ROUNDS
 
 //**********ROUTERS*************************************/
 //get all users
@@ -125,7 +125,7 @@ router.post('/auth', async (req, res)=>{
     })
 })
 
-//forgot password *****NOT WORKING*****GMAIL NEEDS TO BE TROUBLESHOOTED
+//forgot password
 router.post('/forgot-password', async (req, res)=>{
     if(req.body.email_address === ""){
         return res.status(203).json({
@@ -140,8 +140,6 @@ router.post('/forgot-password', async (req, res)=>{
             }
         })
 
-        console.log(user)
-
         if(!user){
             return res.status(203).json({
                 success: false,
@@ -150,7 +148,7 @@ router.post('/forgot-password', async (req, res)=>{
         }
 
         const token = crypto.randomBytes(20).toString("hex")
-        console.log(token)
+
         user = await user.update({
             reset_password_token: token,
             //1 hour (ms)
@@ -161,16 +159,20 @@ router.post('/forgot-password', async (req, res)=>{
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
+                type: "OAuth2",
                 user: `${process.env.EMAIL_ADDRESS}`,
-                pass: `${process.env.EMAIL_PASSWORD}`
+                pass: `${process.env.EMAIL_PASSWORD}`,
+                clientId: `${process.env.OAUTH_CLIENT_ID}`,
+                clientSecret: `${process.env.OAUTH_CLIENT_SECRET}`,
+                refreshToken: `${process.env.OAUTH_REFRESH_TOKEN}`
             }
         })
 
         const mailOptions = {
             from: "ersbo.jack@gmail.com",
             to: user.email_address,
-            subject: "Password reset link",
-            text: `You are receiving this email because you requested the reset of the password for your account. \n` + `Please click on the following link or paste it into your web browser. This link is usable for one hour. \n` + `${process.env.LOCAL_CLIENT}forgot-password/${token} \n` + `If you did not request this, please ignore this email and your password will remain unchanged. \n`
+            subject: "[TEST] ChenequaFarms.com password reset",
+            text: `You are receiving this email because you requested the reset of the password for your account. \n\n` + `Please click on the following link or paste it into your web browser. This link is usable for one hour. \n\n` + `${process.env.LOCAL_CLIENT}forgot-password/${token} \n\n` + `If you did not request this, please ignore this email and your password will remain unchanged. \n\n` + `Thank you,\nChenequa Farms.`
         }
 
         transporter.sendMail(mailOptions, (err, response)=>{
