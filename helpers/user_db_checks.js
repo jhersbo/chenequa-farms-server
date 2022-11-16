@@ -10,10 +10,10 @@ const userExists = async (db, user_id)=>{
     return false
 }
 
-const noUserIdDuplicates = async (db, user_id)=>{
+const noUserEmailDuplicates = async (db, email)=>{
     let user = await db.findOne({
         where: {
-            user_id: user_id
+            email_address: email
         }
     })
     if(user){
@@ -22,4 +22,4 @@ const noUserIdDuplicates = async (db, user_id)=>{
     return true
 }
 
-module.exports = { userExists, noUserIdDuplicates }
+module.exports = { userExists, noUserEmailDuplicates }

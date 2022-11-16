@@ -9,11 +9,11 @@ const { user_auth, user_orders, subscriptions, inventory } = db
 
 //Helper functions
 const { generateAccessToken, decodeToken, doesTokenFail } = require("../helpers/jwt")
-const { noUserIdDuplicates } = require("../helpers/user_db_checks")
+const { noUserEmailDuplicates } = require("../helpers/user_db_checks")
 
 //bcrypt
 const bcrypt = require('bcrypt')
-const saltRounds = process.env.BCRYPT_SALT_ROUNDS
+const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS)
 
 //**********ROUTERS*************************************/
 //get all users
@@ -53,16 +53,21 @@ router.get('/:user_id', async (req, res)=>{
 //create a new user
 router.post('/', (req, res)=>{
     bcrypt.hash(req.body.password_hash, saltRounds, async (err, hash)=>{
+
+        const user_id = crypto.randomBytes(10).toString("hex")
+
+        console.log(user_id)
+
         try{
             let newUser = {
-                user_id: req.body.user_id,
+                user_id: user_id,
                 email_address: req.body.email_address,
                 password_hash: hash,
                 first_name: req.body.first_name.toLowerCase(),
                 last_name: req.body.last_name.toLowerCase(),
                 is_admin: false
             }          
-            if(await noUserIdDuplicates(user_auth, req.body.user_id)){
+            if(await noUserEmailDuplicates(user_auth, req.body.email_address)){
                 await user_auth.create(newUser)
                 return res.status(200).json({
                     success: true,
@@ -71,13 +76,19 @@ router.post('/', (req, res)=>{
                         token: generateAccessToken(newUser.user_id, newUser.email_address, newUser.is_admin)
                     }
                 })
-                
             }else{
-                return res.status(203).json({success: false, message: "User already exists."})
+                return res.status(203).json({
+                    success: false,
+                    message: "A user already exists by this email."
+                })
             }
             
         }catch(err){
-            res.status(500).json(err)
+            res.status(500).json({
+                success: false,
+                error: err,
+                message: "Unable to create account."
+            })
         }
     })
 })
