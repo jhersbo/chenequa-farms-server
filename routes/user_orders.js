@@ -41,6 +41,20 @@ router.get('/:user_id', async (req, res)=>{
 })
 
 //get unfilled user orders
+router.get('/unfilled', async (req, res)=>{
+    try{
+        let found = await user_orders.findAll({
+            where: {
+                filled: false
+            }
+        })
+        res.status(200).json(found)
+    }catch(err){
+        res.status(500).json(err)
+    }
+})
+
+//get unfilled user orders
 router.get('/unfilled/:user_id', async (req, res)=>{
     try{
         let found = await user_orders.findAll({
