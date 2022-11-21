@@ -15,6 +15,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      phone_number: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       first_name: {
         type: Sequelize.STRING,
         allowNull: false

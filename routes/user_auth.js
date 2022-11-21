@@ -62,6 +62,7 @@ router.post('/', (req, res)=>{
             let newUser = {
                 user_id: user_id,
                 email_address: req.body.email_address,
+                phone_number: req.body.phone_number,
                 password_hash: hash,
                 first_name: req.body.first_name.toLowerCase(),
                 last_name: req.body.last_name.toLowerCase(),
@@ -84,7 +85,7 @@ router.post('/', (req, res)=>{
             }
             
         }catch(err){
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: err,
                 message: "Unable to create account."
