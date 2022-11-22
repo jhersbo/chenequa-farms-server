@@ -18,6 +18,10 @@ module.exports = {
           key: "user_id"
         }
       },
+      order_price: {
+        type: Sequelize.DECIMAL,
+        allowNull: false
+      },
       order_content: {
         type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false

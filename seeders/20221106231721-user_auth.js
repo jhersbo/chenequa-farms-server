@@ -36,6 +36,15 @@ const userSeed = [
     first_name: "Alex",
     last_name: "Gapinski",
     is_admin: false
+  },
+  {
+    user_id: "61eaec111179508352f8",
+    email_address: "jhersbo@gmail.com",
+    password_hash: "$2b$10$JRyeg2PLnwPx/T9ulCpgte5LLeg9aJiHBeK.nR1WqHAcTJmrgVsyi",
+    phone_number: "2624413564",
+    first_name: "jack",
+    last_name: "ersbo",
+    is_admin: true,
   }
 ]
 

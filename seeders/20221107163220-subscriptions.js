@@ -12,7 +12,7 @@ const subscriptionsSeed = [
   },
   {
     sub_id: "1",
-    user_id: "2",
+    user_id: "61eaec111179508352f8",
     purch_date: new Date(),
     renew_date: new Date(),
     active: true,

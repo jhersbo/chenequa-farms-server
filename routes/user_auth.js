@@ -99,9 +99,19 @@ router.post('/auth', async (req, res)=>{
     await user_auth.findOne({
         where: {
             email_address: req.body.email_address
-        }
+        },
+        include: [
+            {
+                model: user_orders
+            },
+            {
+                model: subscriptions
+            }
+        ]
     })
+
     .then((user)=>{
+        console.log(user)
         if(!user){
             res.status(203).json({
                 success: false, 
@@ -115,10 +125,13 @@ router.post('/auth', async (req, res)=>{
                         data: {
                             user_id: user.user_id,
                             email_address: user.email_address,
+                            phone_number: user.phone_number,
                             password_hash: user.password_hash,
                             first_name: user.first_name,
                             last_name: user.last_name,
                             is_admin: user.is_admin,
+                            user_orders: user.user_orders,
+                            subscriptions: user.subscriptions,
                             token: generateAccessToken(user.user_id, user.email_address, user.is_admin)
                         }
                     })
@@ -137,7 +150,7 @@ router.post('/auth', async (req, res)=>{
     })
 })
 
-//forgot password email
+//forgot password email ****OAUTH2 is not working
 router.post('/forgot-password', async (req, res)=>{
     if(req.body.email_address === ""){
         return res.status(203).json({
