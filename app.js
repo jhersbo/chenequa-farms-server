@@ -19,6 +19,16 @@ app.use(cors(corsConfig))
 
 //parser for request bodies
 app.use(bodyParser.json())
+
+//CSP headers
+app.use((req, res, next)=>{
+    res.setHeader(
+        "Content-Security-Policy-Report-Only",
+        "default-src 'self';"
+    );
+    next();
+})
+
 //controllers
 app.use('/user_auth', require('./routes/user_auth'))
 app.use('/inventory', require('./routes/inventory'))
