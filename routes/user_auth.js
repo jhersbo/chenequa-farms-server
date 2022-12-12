@@ -74,7 +74,9 @@ router.post('/', (req, res)=>{
                     success: true,
                     data: {
                         ...newUser,
-                        token: generateAccessToken(newUser.user_id, newUser.email_address, newUser.is_admin)
+                        token: generateAccessToken(newUser.user_id, newUser.email_address, newUser.is_admin),
+                        user_orders: [],
+                        subscriptions: []
                     }
                 })
             }else{

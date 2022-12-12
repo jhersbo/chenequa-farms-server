@@ -16,9 +16,16 @@ router.get('/', async (req, res)=>{
                 }
             ]
         })
-        res.status(200).json(foundInventory)
+        res.status(200).json({
+            success: true,
+            data: foundInventory
+        })
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Unable to retrieve inventory.",
+            error: err
+        })
     }
 })
 
@@ -31,36 +38,60 @@ router.get('/:item_id', async (req, res)=>{
             }
         })
         if(foundItem){
-            res.status(200).json(foundItem)
+            res.status(200).json({
+                success: true,
+                data: foundItem
+            })
         }else{
-            res.status(203).json("No item by that ID exists.")
+            res.status(203).json({
+                success: false,
+                message: "No item by that ID exists."
+            })
         }
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Unable to retrieve item.",
+            error: err
+        })
     }
 })
 
 //create a new item
 router.post('/', async (req, res)=>{
     try{
-        await inventory.create(req.body)
-        res.status(200).json("Item created.")
+        let newItem = await inventory.create(req.body)
+        return res.status(200).json({
+            success: true,
+            data: newItem
+        })
     }catch(err){
-        res.status(500).json("Error creating new item.", err)
+        return res.status(500).json({
+            success: false,
+            message: "Unable to create new item.",
+            error: err
+        })
     }
 })
 
 //update or edit an item
 router.put('/', async (req, res)=>{
     try{
-        await inventory.update(req.body, {
+        let editedItem = await inventory.update(req.body, {
             where: {
                 item_id: req.body.item_id
             }
         })
-        res.status(200).json("Item updated.")
+        res.status(200).json({
+            success: true,
+            data: editedItem
+        })
     }catch(err){
-        res.status(500).json("Error updating item.", err)
+        res.status(500).json({
+            success: true,
+            message: "Unable to edit item.",
+            error: err
+        })
     }
 })
 
@@ -74,12 +105,22 @@ router.delete('/:item_id', async (req, res)=>{
         })
         if(found){
             await found.destroy();
-            res.status(200).json("Item deleted.")
+            res.status(200).json({
+                success: true,
+                message: "Item deleted."
+            })
         }else{
-            res.status(203).json("No item by that ID exists.")
+            res.status(203).json({
+                success: false,
+                message: "No item by that ID found."
+            })
         }
     }catch(err){
-        res.status(500).json("Error deleting item.")
+        res.status(500).json({
+            success: false,
+            message: "Error deleting item.",
+            error: err
+        })
     }
 })
 
