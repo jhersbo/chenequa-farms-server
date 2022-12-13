@@ -20,7 +20,8 @@ const userOrdersSeed = [
           qty: 2
         }
       )
-    ]
+    ],
+    filled: false
   },
   {
     order_id: "1",
@@ -41,7 +42,8 @@ const userOrdersSeed = [
           qty: 2
         }
       )
-    ]
+    ],
+    filled: false
   }
 ]
 
