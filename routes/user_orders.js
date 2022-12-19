@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const crypto = require("crypto")
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
@@ -69,13 +70,29 @@ router.get('/unfilled/:user_id', async (req, res)=>{
     }
 })
 
-//create a new order
+//create a new order **IMPLEMENT CONFIRMATION EMAIL
 router.post('/', async (req, res)=>{
+    let order_id = crypto.randomBytes(10).toString("hex")
+    let newOrder = {
+        order_id: order_id,
+        user_id: req.body.user_id,
+        order_price: req.body.order_price,
+        order_content: req.body.order_content,
+        filled: false
+    }
+
     try{
-        await user_orders.create(req.body)
-        res.status(200).json("Order created.")
+        await user_orders.create(newOrder)
+        res.status(200).json({
+            success: true,
+            message: "Order created."
+        })
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Order creation failed.",
+            error: err
+        })
     }
 })
 
