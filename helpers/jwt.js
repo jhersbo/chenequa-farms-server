@@ -46,4 +46,13 @@ const doesTokenFail = (req, token)=>{
     return false
 }
 
-module.exports = { generateAccessToken, decodeToken, doesTokenFail }
+const isUserAuthentic = (req, token)=>{
+    let user_idMatch = req.body.user_id !== token.user_id;
+    let expiredCheck = token.exp >= Date.now();
+
+    if(user_idMatch || expiredCheck) return false
+
+    return true
+}
+
+module.exports = { generateAccessToken, decodeToken, doesTokenFail, isUserAuthentic }

@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const crypto = require("crypto")
+const { generateAccessToken, decodeToken, doesTokenFail, isUserAuthentic } = require("../helpers/jwt")
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
 
@@ -79,7 +80,18 @@ router.get('/unfilled/:user_id', async (req, res)=>{
 
 //create a new order **IMPLEMENT CONFIRMATION EMAIL
 router.post('/', async (req, res)=>{
+    //see if user is authentic
+    const token = decodeToken(req)
+    if(!isUserAuthentic(req, token)){
+        res.status(203).json({
+            success: false,
+            message: "Invalid authorization token."
+        })
+        return
+    }
+    //generate order id
     let order_id = crypto.randomBytes(10).toString("hex")
+    //package order
     let newOrder = {
         order_id: order_id,
         user_id: req.body.user_id,
@@ -89,6 +101,7 @@ router.post('/', async (req, res)=>{
         date_created: new Date().toString(),
         date_filled: null
     }
+    //parse each item
     let parsedContent = newOrder.order_content.map((el, index)=>{
         return JSON.parse(el)
     })
