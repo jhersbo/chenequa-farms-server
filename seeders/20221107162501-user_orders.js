@@ -2,48 +2,26 @@
 
 const userOrdersSeed = [
   {
-    order_id: "0",
-    user_id: "2",
-    order_price: 50,
-    order_content: [
-      JSON.stringify(
-        {
-          item_id: "1",
-          name: "Natural Soap",
-          qty: 1
-        }
-      ),
-      JSON.stringify(
-        {
-          item_id: "0",
-          name: "Flower Boquet",
-          qty: 2
-        }
-      )
-    ],
-    filled: false
-  },
-  {
-    order_id: "1",
+    order_id: "1293404532157few02931845",
     user_id: "61eaec111179508352f8",
-    order_price: 50,
+    order_price: 100,
     order_content: [
-      JSON.stringify(
-        {
-          item_id: "1",
-          name: "Natural Soap",
-          qty: 1
-        }
-      ),
-      JSON.stringify(
-        {
-          item_id: "0",
-          name: "Flower Boquet",
-          qty: 2
-        }
-      )
+      JSON.stringify({
+        item: {
+          item_id: "121555e33323411432",
+          category_id: "1",
+          name: "Soap of the year",
+          description: "Good soap",
+          number_remaining: 1000,
+          price: "135",
+          photo_path: "https://placekitten.com/200/300",
+        },
+        qty: 3
+      })
     ],
-    filled: false
+    filled: false,
+    date_created: new Date().toString(),
+    date_filled: null
   }
 ]
 

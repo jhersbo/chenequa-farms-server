@@ -101,15 +101,7 @@ router.post('/auth', async (req, res)=>{
     await user_auth.findOne({
         where: {
             email_address: req.body.email_address
-        },
-        include: [
-            {
-                model: user_orders
-            },
-            {
-                model: subscriptions
-            }
-        ]
+        }
     })
 
     .then((user)=>{

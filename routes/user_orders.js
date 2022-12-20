@@ -35,9 +35,16 @@ router.get('/:user_id', async (req, res)=>{
                 user_id: req.params.user_id
             }
         })
-        res.status(200).json(found)
+        res.status(200).json({
+            success: true,
+            data: found
+        })
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Unable to retrieve orders.",
+            error: err
+        })
     }
 })
 
@@ -78,21 +85,39 @@ router.post('/', async (req, res)=>{
         user_id: req.body.user_id,
         order_price: req.body.order_price,
         order_content: req.body.order_content,
-        filled: false
+        filled: false,
+        date_created: new Date().toString(),
+        date_filled: null
     }
-
+    let parsedContent = newOrder.order_content.map((el, index)=>{
+        return JSON.parse(el)
+    })
     try{
         await user_orders.create(newOrder)
+        //decrement the number of items remaining
+        //should find a way to refactor this to be faster.
+        await parsedContent.forEach(async ({ item, qty })=>{
+            let foundInv = await inventory.findOne({
+                where: {
+                    item_id: item.item_id
+                }
+            })
+            foundInv = await foundInv.update({
+                number_remaining: foundInv.number_remaining - qty
+            })
+        })
         res.status(200).json({
             success: true,
             message: "Order created."
         })
+        return
     }catch(err){
         res.status(500).json({
             success: false,
             message: "Order creation failed.",
             error: err
         })
+        return
     }
 })
 

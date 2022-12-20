@@ -27,6 +27,51 @@ const inventorySeed = [
     number_remaining: 2,
     price: 8,
     photo_path: "https://placekitten.com/200/300"
+  },
+  {
+    item_id: "123454533235151432",
+    category_id: "1",
+    name: "Very Good Soap",
+    description: "Good soap",
+    number_remaining: 15,
+    price: "15",
+    photo_path: "https://placekitten.com/200/300",
+  },
+  {
+    item_id: "121555e33323411432",
+    category_id: "1",
+    name: "Soap of the year",
+    description: "Good soap",
+    number_remaining: 1000,
+    price: "135",
+    photo_path: "https://placekitten.com/200/300",
+  },
+  {
+    item_id: "1215551432",
+    category_id: "1",
+    name: "Wugma Soap",
+    description: "Good soap",
+    number_remaining: 15,
+    price: "15",
+    photo_path: "https://placekitten.com/200/300",
+  },
+  {
+    item_id: "1211111151432",
+    category_id: "1",
+    name: "Just Soap",
+    description: "Good soap",
+    number_remaining: 15,
+    price: "15",
+    photo_path: "https://placekitten.com/200/300",
+  },
+  {
+    item_id: "1234545432",
+    category_id: "1",
+    name: "Excellent Soap",
+    description: "Good soap",
+    number_remaining: 15,
+    price: "15",
+    photo_path: "https://placekitten.com/200/300",
   }
 ]
 

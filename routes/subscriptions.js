@@ -17,19 +17,20 @@ router.get('/:user_id', async (req, res)=>{
         let found = await subscriptions.findAll({
             where: {
                 user_id: req.params.user_id
-            },
-            include: [
-                {
-                    model: user_auth,
-                    attributes: {
-                        exclude: ["password_hash"]
-                    }
-                }
-            ]
+            }
         })
-        res.status(200).json(found)
+        res.status(200).json({
+            success: true,
+            data: found
+        })
+        return
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Unable to retrieve subscriptions.",
+            error: err
+        })
+        return
     }
 })
 

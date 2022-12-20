@@ -30,6 +30,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
         allowNull: false
+      },
+      date_created: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      date_filled: {
+        type: Sequelize.STRING,
+        allowNull: true
       }
     });
   },
