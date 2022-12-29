@@ -4,14 +4,14 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class subscriptions extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate({ user_auth }) {
+
+    static associate({ user_auth, sub_types }) {
       this.belongsTo(user_auth, {
         foreignKey: "user_id"
+      })
+
+      this.belongsTo(sub_types, {
+        foreignKey: "sub_type_id"
       })
     }
   }
@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     sub_id: {
       type: DataTypes.STRING,
       primaryKey: true,
+      allowNull: false
+    },
+    sub_type_id:{
+      type: DataTypes.STRING,
       allowNull: false
     },
     user_id: {
@@ -37,12 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
-    rate: {
+    price: {
       type: DataTypes.DECIMAL,
-      allowNull: false
-    },
-    type: {
-      type: DataTypes.STRING,
       allowNull: false
     }
   }, {

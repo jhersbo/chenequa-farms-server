@@ -7,6 +7,17 @@ module.exports = {
         primaryKey: true,
         allowNull: false
       },
+      sub_type_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: "sub_types",
+            schema: "public"
+          },
+          key: "sub_type_id"
+        }
+      },
       user_id: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -30,12 +41,8 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      rate: {
+      price: {
         type: Sequelize.DECIMAL,
-        allowNull: false
-      },
-      type: {
-        type: Sequelize.STRING,
         allowNull: false
       }
     });
@@ -44,4 +51,3 @@ module.exports = {
     await queryInterface.dropTable('subscriptions');
   }
 };
-
