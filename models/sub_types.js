@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     number_available: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    photo_path: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,

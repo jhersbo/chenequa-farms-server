@@ -22,6 +22,10 @@ module.exports = {
       number_available: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      photo_path: {
+        type: Sequelize.STRING,
+        allowNull: false
       }
     });
   },
