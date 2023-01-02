@@ -35,6 +35,7 @@ app.use('/inventory', require('./routes/inventory'))
 app.use('/user_orders', require('./routes/user_orders'))
 app.use('/subscriptions', require('./routes/subscriptions'))
 app.use('/categories', require('./routes/categories'))
+app.use('/sub_types', require('./routes/sub_types'))
 
 app.get('/', async (req, res)=>{
     try{
