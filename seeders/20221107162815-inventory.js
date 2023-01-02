@@ -34,7 +34,7 @@ const inventorySeed = [
     name: "Very Good Soap",
     description: "Good soap",
     number_remaining: 15,
-    price: "15",
+    price: 15,
     photo_path: "https://placekitten.com/200/300",
   },
   {
@@ -43,7 +43,7 @@ const inventorySeed = [
     name: "Soap of the year",
     description: "Good soap",
     number_remaining: 1000,
-    price: "135",
+    price: 135,
     photo_path: "https://placekitten.com/200/300",
   },
   {
@@ -52,7 +52,7 @@ const inventorySeed = [
     name: "Wugma Soap",
     description: "Good soap",
     number_remaining: 15,
-    price: "15",
+    price: 15,
     photo_path: "https://placekitten.com/200/300",
   },
   {
@@ -61,7 +61,7 @@ const inventorySeed = [
     name: "Just Soap",
     description: "Good soap",
     number_remaining: 15,
-    price: "15",
+    price: 15,
     photo_path: "https://placekitten.com/200/300",
   },
   {
@@ -70,7 +70,7 @@ const inventorySeed = [
     name: "Excellent Soap",
     description: "Good soap",
     number_remaining: 15,
-    price: "15",
+    price: 15,
     photo_path: "https://placekitten.com/200/300",
   }
 ]

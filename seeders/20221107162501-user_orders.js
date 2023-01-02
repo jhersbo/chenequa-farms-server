@@ -13,7 +13,7 @@ const userOrdersSeed = [
           name: "Soap of the year",
           description: "Good soap",
           number_remaining: 1000,
-          price: "135",
+          price: 135,
           photo_path: "https://placekitten.com/200/300",
         },
         qty: 3

@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       order_price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: false
       },
       order_content: {
