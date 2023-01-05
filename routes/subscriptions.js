@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const db = require('../models')
 const { user_auth, user_orders, subscriptions, inventory } = db
+const { isUserAuthentic, decodeToken } = require("../helpers/jwt")
 
 router.get('/', async (req, res)=>{
     try{
@@ -34,8 +35,16 @@ router.get('/:user_id', async (req, res)=>{
     }
 })
 
-//create a new subscriptions
+//create a new subscription
 router.post('/', async (req, res)=>{
+    let token = decodeToken(req)
+    if(!isUserAuthentic(req, token)){
+        res.status(203).json({
+            success: false,
+            message: "Invalid authorization token."
+        })
+        return
+    }
     try{
         await subscriptions.create(req.body)
         res.status(200).json("Subscription created.")
@@ -65,6 +74,14 @@ router.put('/', async (req, res)=>{
 
 //delete a subscription
 router.delete('/:sub_id', async (req, res)=>{
+    let token = decodeToken(req)
+    if(!isUserAuthentic(req, token)){
+        res.status(203).json({
+            success: false,
+            message: "Invalid authorization token."
+        })
+        return
+    }
     try{
         let found = await subscriptions.findOne({
             where: {
@@ -72,13 +89,26 @@ router.delete('/:sub_id', async (req, res)=>{
             }
         })
         if(!found){
-            res.status(203).json("No subscription by that ID exists.")
+            res.status(203).json({
+                success: false,
+                message: "Unable to find subscription by that ID."
+            })
+            return
         }else{
             await found.destroy()
-            res.status(200).json("Subscription deleted.")
+            res.status(200).json({
+                success: true,
+                message: "Subscription deleted."
+            })
+            return
         }
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json({
+            success: false,
+            message: "Server error.",
+            error: err
+        })
+        return
     }
 })
 

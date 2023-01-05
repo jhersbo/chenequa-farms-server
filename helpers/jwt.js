@@ -37,8 +37,6 @@ const doesTokenFail = (req, token)=>{
     let email_addressMatch = req.body.email_address !== token.email_address;
     let expiredCheck = token.exp >= Date.now();
 
-    console.log({user_idMatch, email_addressMatch, expiredCheck})
-
     if(user_idMatch || email_addressMatch || expiredCheck){
         return true
     }
@@ -47,6 +45,7 @@ const doesTokenFail = (req, token)=>{
 }
 
 const isUserAuthentic = (req, token)=>{
+    if(!token.user_id || !req.body.user_id) return false
     let user_idMatch = req.body.user_id !== token.user_id;
     let expiredCheck = token.exp >= Date.now();
 
