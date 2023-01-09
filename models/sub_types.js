@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    frequency: {
+      type: DataTypes.BIGINT,
+      allowNull: false
+    },
     photo_path: {
       type: DataTypes.STRING,
       allowNull: false

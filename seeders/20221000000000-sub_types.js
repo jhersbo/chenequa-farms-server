@@ -7,6 +7,7 @@ const sub_typeSeed = [
     description: "Pick up flowers every week.",
     price: 80.5,
     number_available: 15,
+    frequency: 604800000,
     photo_path: "https://placekitten.com/200/300"
   },
   {
@@ -15,6 +16,7 @@ const sub_typeSeed = [
     description: "Pick up flowers every other week.",
     price: 50.00,
     number_available: 12,
+    frequency: 1209600000,
     photo_path: "https://placekitten.com/200/300"
   },
   {
@@ -23,6 +25,7 @@ const sub_typeSeed = [
     description: "Pick up soap every week.",
     price: 80.5,
     number_available: 15,
+    frequency: 604800000,
     photo_path: "https://placekitten.com/200/300"
   },
   {
@@ -31,6 +34,7 @@ const sub_typeSeed = [
     description: "Pick up soap every week.",
     price: 50.00,
     number_available: 12,
+    frequency: 1209600000,
     photo_path: "https://placekitten.com/200/300"
   }
 ]

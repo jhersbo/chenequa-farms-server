@@ -18,6 +18,10 @@ module.exports = {
           key: "sub_type_id"
         }
       },
+      sub_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       user_id: {
         type: Sequelize.STRING,
         allowNull: false,

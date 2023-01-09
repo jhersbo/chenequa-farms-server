@@ -57,31 +57,34 @@ router.post('/', async (req, res)=>{
     }
     //generate subscription id
     let sub_id = crypto.randomBytes(10).toString("hex")
-    //package sub data
-    let newSub = {
-        sub_id: sub_id,
-        sub_type_id: req.body.sub_type_id,
-        user_id: req.body.user_id,
-        purch_date: String(Date.now()),
-        renew_date: String(Date.now() + 2629746000),
-        active: true,
-        price: req.body.price
-    }
     try{
-        //create subscription
-        await subscriptions.create(newSub)
-        //decrement number_available on sub_types
+        //get the corresponding sub_type
         let found_sub_type = await sub_types.findOne({
             where: {
                 sub_type_id: req.body.sub_type_id
             }
         })
+        //package sub data
+        let newSub = {
+            sub_id: sub_id,
+            sub_type_id: req.body.sub_type_id,
+            sub_name: req.body.name,
+            user_id: req.body.user_id,
+            purch_date: String(Date.now()),
+            renew_date: String(Date.now() + parseInt(found_sub_type.frequency)),
+            active: true,
+            price: req.body.price
+        }
+        //create subscription
+        let subCreated = await subscriptions.create(newSub)
+        //decrement number_available on sub_types
         found_sub_type = await found_sub_type.update({
             number_available: found_sub_type.number_available - 1
         })
         res.status(200).json({
             success: true,
-            message: "Subscription created."
+            message: "Subscription created.",
+            data: subCreated
         })
         return
     }catch(err){

@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      frequency: {
+        type: Sequelize.BIGINT,
+        allowNull: false
+      },
       photo_path: {
         type: Sequelize.STRING,
         allowNull: false
