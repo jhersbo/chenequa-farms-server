@@ -17,7 +17,11 @@ const generateAccessToken = (user_id, email_address, is_admin)=>{
     return token
 }
 
+//if token is included and valid, will return decoded version.
+//if not, will return undefined
 const decodeToken = (req)=>{
+    if(!req.headers.authorization) return
+
     const token = req.headers.authorization.split(' ')[1];
 
     if(!token) return new Error("No token found.")

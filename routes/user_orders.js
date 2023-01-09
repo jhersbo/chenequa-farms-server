@@ -82,6 +82,14 @@ router.get('/unfilled/:user_id', async (req, res)=>{
 router.post('/', async (req, res)=>{
     //see if user is authentic
     const token = decodeToken(req)
+    //if no token, return
+    if(!token){
+        res.status(203).json({
+            success: false,
+            message: "No authorization token provided."
+        })
+        return
+    }
     if(!isUserAuthentic(req, token)){
         res.status(203).json({
             success: false,
